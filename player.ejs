@@ -1,0 +1,617 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#000000" />
+
+  <title>Free Fire Profile</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      color-scheme: dark;
+      --bg: #000;
+      --surface: #0b0b0d;
+      --border: #222226;
+      --muted: #85858f;
+      --white: #f5f5f7;
+      --gold: #ffc857;
+      --blue: #42a5ff;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--white);
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .search-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      width: 100%;
+      padding: 12px 14px;
+      background: rgba(0, 0, 0, 0.94);
+      border-bottom: 1px solid #19191d;
+      backdrop-filter: blur(16px);
+    }
+
+    .search-form {
+      width: 100%;
+      max-width: 620px;
+      display: flex;
+      gap: 9px;
+      margin: 0 auto;
+    }
+
+    .search-input {
+      flex: 1;
+      width: 0;
+      min-width: 0;
+      height: 48px;
+      padding: 0 15px;
+      border: 1px solid #29292e;
+      border-radius: 10px;
+      outline: none;
+      background: #101013;
+      color: #fff;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+
+    .search-input::placeholder {
+      color: #777780;
+    }
+
+    .search-input:focus {
+      border-color: #55555f;
+    }
+
+    .search-button {
+      min-width: 92px;
+      height: 48px;
+      padding: 0 17px;
+      border: 1px solid #fff;
+      border-radius: 10px;
+      background: #f5f5f5;
+      color: #000;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.7px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .search-button:hover {
+      background: #d9d9df;
+    }
+
+    .search-button:active {
+      transform: scale(0.97);
+    }
+
+    .page {
+      width: 100%;
+      max-width: 620px;
+      min-height: calc(100vh - 73px);
+      margin: 0 auto;
+      padding: 32px 18px 40px;
+    }
+
+    .profile {
+      width: 100%;
+    }
+
+    .identity {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 12px 8px 29px;
+    }
+
+    .avatar-ring {
+      width: 124px;
+      height: 124px;
+      padding: 3px;
+      margin-bottom: 22px;
+      border: 1px solid #393940;
+      border-radius: 50%;
+      background: #111114;
+    }
+
+    .avatar {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #151519;
+    }
+
+    .default-avatar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f2f2f4;
+      font-size: 35px;
+      font-weight: 900;
+      letter-spacing: -2px;
+    }
+
+    .nickname {
+      max-width: 100%;
+      color: #fff;
+      font-size: clamp(24px, 6vw, 34px);
+      font-weight: 900;
+      line-height: 1.2;
+      letter-spacing: -0.8px;
+      overflow-wrap: anywhere;
+    }
+
+    .uid-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      margin-top: 13px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .uid-label {
+      color: #65656f;
+    }
+
+    .uid-value {
+      color: #bcbcc5;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .copy-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border: 1px solid #29292e;
+      border-radius: 8px;
+      background: #101013;
+      color: #bdbdc7;
+      cursor: pointer;
+    }
+
+    .copy-button:hover {
+      color: white;
+      border-color: #55555f;
+    }
+
+    .copy-button svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    .server-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-top: 19px;
+      padding: 9px 13px;
+      border: 1px solid #242429;
+      border-radius: 9px;
+      background: #0c0c0f;
+    }
+
+    .flag {
+      font-size: 19px;
+      line-height: 1;
+    }
+
+    .server-name {
+      color: #dedee4;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .server-caption {
+      color: #6d6d77;
+      font-size: 10px;
+      letter-spacing: 0.8px;
+    }
+
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        #2a2a30 18%,
+        #2a2a30 82%,
+        transparent
+      );
+    }
+
+    .stats-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 25px 1px 16px;
+    }
+
+    .stats-title {
+      color: #d6d6dc;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 1.8px;
+    }
+
+    .stats-count {
+      color: #62626c;
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 11px;
+    }
+
+    .stat {
+      position: relative;
+      min-width: 0;
+      min-height: 130px;
+      overflow: hidden;
+      padding: 17px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: linear-gradient(145deg, #0d0d10, #080809);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .stat:hover {
+      border-color: #414149;
+      transform: translateY(-2px);
+    }
+
+    .stat-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 19px;
+    }
+
+    .stat-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 35px;
+      height: 35px;
+      flex-shrink: 0;
+      border: 1px solid #29292e;
+      border-radius: 10px;
+      background: #141418;
+      font-size: 17px;
+    }
+
+    .stat-label {
+      color: #92929d;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .stat-value {
+      font-size: clamp(22px, 5.5vw, 29px);
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -0.7px;
+      overflow-wrap: anywhere;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .level .stat-value {
+      color: var(--gold);
+    }
+
+    .likes .stat-value {
+      color: var(--blue);
+    }
+
+    .experience .stat-value {
+      color: #f4f4f7;
+    }
+
+    .region .stat-value {
+      color: var(--blue);
+    }
+
+    .stat-subtitle {
+      margin-top: 9px;
+      color: #65656f;
+      font-size: 10px;
+    }
+
+    .error-state {
+      padding: 70px 12px;
+      text-align: center;
+    }
+
+    .error-symbol {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 54px;
+      height: 54px;
+      margin: 0 auto 18px;
+      border: 1px solid #29292e;
+      border-radius: 16px;
+      color: #9999a3;
+      font-size: 23px;
+    }
+
+    .error-title {
+      color: #ededf0;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .error-text {
+      margin-top: 9px;
+      color: #777780;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    @media (min-width: 500px) {
+      .page {
+        padding-top: 43px;
+      }
+
+      .avatar-ring {
+        width: 140px;
+        height: 140px;
+      }
+
+      .identity {
+        padding-bottom: 34px;
+      }
+
+      .stat {
+        min-height: 145px;
+        padding: 21px;
+      }
+    }
+
+    @media (max-width: 350px) {
+      .search-wrap {
+        padding: 9px;
+      }
+
+      .search-button {
+        min-width: 76px;
+        padding: 0 10px;
+      }
+
+      .page {
+        padding: 23px 12px 30px;
+      }
+
+      .stat {
+        padding: 13px;
+      }
+
+      .stat-top {
+        gap: 7px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="search-wrap">
+    <form class="search-form" action="/" method="GET">
+      <input
+        class="search-input"
+        type="text"
+        name="uid"
+        placeholder="Enter Free Fire UID"
+        value="<%= uid %>"
+        inputmode="numeric"
+        pattern="[0-9]{5,20}"
+        minlength="5"
+        maxlength="20"
+        aria-label="Free Fire UID"
+        required
+      />
+
+      <button class="search-button" type="submit">
+        SEARCH
+      </button>
+    </form>
+  </header>
+
+  <main class="page">
+    <% if (player) { %>
+      <section class="profile">
+        <div class="identity">
+          <div class="avatar-ring">
+            <% if (isOwnProfile) { %>
+              <img
+                class="avatar"
+                src="https://scontent.fjsr14-1.fna.fbcdn.net/v/t39.30808-1/861498287_122126727633371477_4517925297852134838_n.jpg?stp=dst-jpg_tt6&cstp=mx1080x1080&ctp=s200x200&_nc_cat=104&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=e99d92&_nc_ohc=-o9IoFp0_6YQ7kNvwGYB15j&_nc_oc=Adr3VM2Ma3BTCOqObLWfdhXKDxqFZWXctG11siRHe82h_-5MN4OKFIijEt2bpBRlyoE&_nc_zt=24&_nc_ht=scontent.fjsr14-1.fna&_nc_gid=CUiH0UXRIOgU34gbXsTsUg&_nc_ss=7b2a8&oh=00_AQSRt2naebdnageZ0ngKyY-da9KJTYlf-nXcYFdoZpaQFA&oe=6AE8306D"
+                alt="Player profile photo"
+                referrerpolicy="no-referrer"
+              />
+            <% } else { %>
+              <div class="avatar default-avatar" aria-label="Player avatar">
+                FF
+              </div>
+            <% } %>
+          </div>
+
+          <h1 class="nickname">
+            <%= player.nickname || "Unknown Player" %>
+          </h1>
+
+          <div class="uid-row">
+            <span class="uid-label">UID</span>
+            <span class="uid-value" id="playerUid"><%= player.id || uid %></span>
+
+            <button
+              class="copy-button"
+              type="button"
+              aria-label="Copy player UID"
+              title="Copy UID"
+              onclick="copyPlayerUid()"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <rect x="8" y="8" width="12" height="12" rx="2"></rect>
+                <path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path>
+              </svg>
+            </button>
+          </div>
+
+          <div class="server-pill">
+            <% if ((player.region || "").toUpperCase() === "BD") { %>
+              <span class="flag" aria-label="Bangladesh flag">🇧🇩</span>
+              <span class="server-name">BANGLADESH</span>
+            <% } else { %>
+              <span class="flag" aria-hidden="true">🌐</span>
+              <span class="server-name"><%= player.region || "UNKNOWN" %></span>
+            <% } %>
+            <span class="server-caption">SERVER</span>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="stats-heading">
+          <h2 class="stats-title">PLAYER STATISTICS</h2>
+          <span class="stats-count">PROFILE DATA</span>
+        </div>
+
+        <div class="stats">
+          <article class="stat level">
+            <div class="stat-top">
+              <span class="stat-icon" aria-hidden="true">♛</span>
+              <span class="stat-label">Level</span>
+            </div>
+
+            <p class="stat-value"><%= player.level ?? "—" %></p>
+            <p class="stat-subtitle">PLAYER RANK</p>
+          </article>
+
+          <article class="stat likes">
+            <div class="stat-top">
+              <span class="stat-icon" aria-hidden="true">♥</span>
+              <span class="stat-label">Likes</span>
+            </div>
+
+            <p class="stat-value">
+              <%= Number.isFinite(Number(player.like))
+                ? Number(player.like).toLocaleString("en-US")
+                : "—" %>
+            </p>
+            <p class="stat-subtitle">TOTAL LIKES</p>
+          </article>
+
+          <article class="stat experience">
+            <div class="stat-top">
+              <span class="stat-icon" aria-hidden="true">⚡</span>
+              <span class="stat-label">Experience</span>
+            </div>
+
+            <p class="stat-value">
+              <%= Number.isFinite(Number(player.exp))
+                ? Number(player.exp).toLocaleString("en-US")
+                : "—" %>
+            </p>
+            <p class="stat-subtitle">TOTAL EXP</p>
+          </article>
+
+          <article class="stat region">
+            <div class="stat-top">
+              <span class="stat-icon" aria-hidden="true">🌍</span>
+              <span class="stat-label">Region</span>
+            </div>
+
+            <p class="stat-value">
+              <%= player.region || "—" %>
+            </p>
+            <p class="stat-subtitle">PLAYER REGION</p>
+          </article>
+        </div>
+      </section>
+    <% } else { %>
+      <section class="error-state">
+        <div class="error-symbol" aria-hidden="true">⌕</div>
+        <h1 class="error-title">Player unavailable</h1>
+        <p class="error-text">
+          We couldn't retrieve this player's information.<br />
+          Check the UID and try again.
+        </p>
+      </section>
+    <% } %>
+  </main>
+
+  <script>
+    async function copyPlayerUid() {
+      const uidElement = document.getElementById("playerUid");
+      if (!uidElement) return;
+
+      const uid = uidElement.textContent.trim();
+
+      try {
+        await navigator.clipboard.writeText(uid);
+      } catch {
+        const input = document.createElement("textarea");
+        input.value = uid;
+        input.style.position = "fixed";
+        input.style.opacity = "0";
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand("copy");
+        input.remove();
+      }
+
+      const button = document.querySelector(".copy-button");
+      if (button) {
+        button.title = "Copied!";
+        button.setAttribute("aria-label", "UID copied");
+      }
+    }
+  </script>
+</body>
+</html>
