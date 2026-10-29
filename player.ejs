@@ -334,6 +334,16 @@ button {
   text-align: center;
 }
 
+.signature-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.8;
+  font-size: 16px;
+  background: #171717;
+  padding: 12px;
+  border-radius: 8px;
+}
+
 /* =========================
    Tablet Responsive
 ========================= */
@@ -582,12 +592,17 @@ button {
       </div>
     </section>
 
-    <% if (player.signature) { %>
-      <section class="info-section signature-section">
-        <h2>✍️ Signature</h2>
-        <p class="signature-text"><%= player.signature %></p>
-      </section>
-    <% } %>
+<% if (player.signature) { %>
+  <section class="info-section signature-section">
+    <h2>✍️ Signature</h2>
+
+    <div
+      class="signature-text"
+      id="player-signature"
+      data-signature="<%= player.signature %>"
+    ></div>
+  </section>
+<% } %>
 
     <% if (player.exp != null || player.credit_score != null) { %>
       <section class="info-section">
@@ -789,6 +804,52 @@ button {
     });
   });
 
+function renderFreeFireSignature(element) {
+  const signature = element.dataset.signature || "";
+  const fragment = document.createDocumentFragment();
+
+  const regex = /\[([0-9a-fA-F]{6})\]/g;
+
+  let currentColor = "#FFFFFF";
+  let lastIndex = 0;
+  let match;
+
+  while ((match = regex.exec(signature)) !== null) {
+    if (match.index > lastIndex) {
+      const span = document.createElement("span");
+
+      span.style.color = currentColor;
+      span.textContent = signature.slice(
+        lastIndex,
+        match.index
+      );
+
+      fragment.appendChild(span);
+    }
+
+    currentColor = `#${match[1]}`;
+    lastIndex = regex.lastIndex;
+  }
+
+  if (lastIndex < signature.length) {
+    const span = document.createElement("span");
+
+    span.style.color = currentColor;
+    span.textContent = signature.slice(lastIndex);
+
+    fragment.appendChild(span);
+  }
+
+  element.replaceChildren(fragment);
+}
+
+const signatureElement = document.getElementById(
+  "player-signature"
+);
+
+if (signatureElement) {
+  renderFreeFireSignature(signatureElement);
+}
   // Convert account creation date into account age.
   document.querySelectorAll(".account-age").forEach((element) => {
     const createdAt = new Date(element.dataset.createdAt);
