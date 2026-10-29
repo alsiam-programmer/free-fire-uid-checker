@@ -487,6 +487,7 @@ button {
 </head>
 <body>
 
+
 <main class="container">
   <header class="header">
     <div class="ff-logo">
@@ -533,7 +534,7 @@ button {
           <h1><%= player.nickname %></h1>
 
           <p>
-            UID:
+            🆔 UID:
             <span
               class="copy-uid"
               data-uid="<%= player.id %>"
@@ -542,7 +543,18 @@ button {
           </p>
 
           <% if (player.region != null) { %>
-            <p>Region: <%= player.region %></p>
+            <p>🌍 Region: <%= player.region %></p>
+          <% } %>
+
+          <% if (player.created_at) { %>
+            <p>
+              📅 Account Created:
+              <time
+                class="account-age"
+                datetime="<%= player.created_at %>"
+                data-created-at="<%= player.created_at %>"
+              ><%= player.created_at %></time>
+            </p>
           <% } %>
         </div>
       </div>
@@ -569,6 +581,13 @@ button {
         </div>
       </div>
     </section>
+
+    <% if (player.signature) { %>
+      <section class="info-section signature-section">
+        <h2>✍️ Signature</h2>
+        <p class="signature-text"><%= player.signature %></p>
+      </section>
+    <% } %>
 
     <% if (player.exp != null || player.credit_score != null) { %>
       <section class="info-section">
@@ -731,6 +750,7 @@ button {
   <% } %>
 </main>
 
+
   <script>
     document.querySelectorAll(".copy-uid").forEach((element) => {
       element.addEventListener("click", async () => {
@@ -750,6 +770,71 @@ button {
         }
       });
     });
+      // Copy player, guild, or guild leader UID.
+  document.querySelectorAll(".copy-uid").forEach((element) => {
+    element.addEventListener("click", async () => {
+      const uid = element.dataset.uid;
+      const originalText = element.textContent;
+
+      try {
+        await navigator.clipboard.writeText(uid);
+        element.textContent = "✅ Copied!";
+
+        setTimeout(() => {
+          element.textContent = originalText;
+        }, 1000);
+      } catch {
+        window.prompt("Copy UID:", uid);
+      }
+    });
+  });
+
+  // Convert account creation date into account age.
+  document.querySelectorAll(".account-age").forEach((element) => {
+    const createdAt = new Date(element.dataset.createdAt);
+
+    if (Number.isNaN(createdAt.getTime())) {
+      return;
+    }
+
+    const now = new Date();
+
+    if (createdAt > now) {
+      return;
+    }
+
+    let years = now.getFullYear() - createdAt.getFullYear();
+    let months = now.getMonth() - createdAt.getMonth();
+    let days = now.getDate() - createdAt.getDate();
+
+    if (days < 0) {
+      months--;
+
+      const previousMonthDays = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        0
+      ).getDate();
+
+      days += previousMonthDays;
+    }
+
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+
+    const age = [];
+
+    if (years > 0) age.push(`${years} year${years === 1 ? "" : "s"}`);
+    if (months > 0) age.push(`${months} month${months === 1 ? "" : "s"}`);
+    if (days > 0 || age.length === 0) {
+      age.push(`${days} day${days === 1 ? "" : "s"}`);
+    }
+
+    element.textContent = `${createdAt.toLocaleDateString()} (${age.join(", ")} ago)`;
+    element.title = `Created at ${createdAt.toLocaleString()}`;
+  });
   </script>
 </body>
 </html>

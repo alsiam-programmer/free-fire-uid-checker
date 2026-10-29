@@ -15,7 +15,7 @@ app.set("views", __dirname);
 app.use(express.static("public"));
 
 app.get("/", async (req, res) => {
-  const uid = String(req.query.uid || "").trim();
+  const uid = String(req.query.uid || OWN_UID).trim();
 
   const renderPage = (player = null, error = null, status = 200) => {
     return res.status(status).render("player", {
