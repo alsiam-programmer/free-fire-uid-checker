@@ -1,617 +1,755 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#000000" />
 
   <title>Free Fire Profile</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    
 
-    :root {
-      color-scheme: dark;
-      --bg: #000;
-      --surface: #0b0b0d;
-      --border: #222226;
-      --muted: #85858f;
-      --white: #f5f5f7;
-      --gold: #ffc857;
-      --blue: #42a5ff;
-    }
+/* =========================
+   Global Styles
+========================= */
 
-    body {
-      min-height: 100vh;
-      background: var(--bg);
-      color: var(--white);
-      font-family: Inter, Arial, Helvetica, sans-serif;
-      -webkit-font-smoothing: antialiased;
-    }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.error-message {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  background: #111111;
+  color: #eeeeee;
+  border: 1px solid #383838;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+:root {
+  color-scheme: dark;
+  --background: #000000;
+  --card-background: #0a0a0a;
+  --inner-background: #111111;
+  --border-color: #262626;
+  --text-color: #f5f5f5;
+  --muted-color: #999999;
+  --search-red: #e50914;
+}
 
-    button,
-    input {
-      font: inherit;
-    }
+html {
+  min-height: 100%;
+  background: var(--background);
+}
 
-    .search-wrap {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      width: 100%;
-      padding: 12px 14px;
-      background: rgba(0, 0, 0, 0.94);
-      border-bottom: 1px solid #19191d;
-      backdrop-filter: blur(16px);
-    }
+body {
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--text-color);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+}
 
-    .search-form {
-      width: 100%;
-      max-width: 620px;
-      display: flex;
-      gap: 9px;
-      margin: 0 auto;
-    }
+input,
+button {
+  font: inherit;
+}
 
-    .search-input {
-      flex: 1;
-      width: 0;
-      min-width: 0;
-      height: 48px;
-      padding: 0 15px;
-      border: 1px solid #29292e;
-      border-radius: 10px;
-      outline: none;
-      background: #101013;
-      color: #fff;
-      font-size: 14px;
-      transition: border-color 0.2s;
-    }
+button {
+  cursor: pointer;
+}
 
-    .search-input::placeholder {
-      color: #777780;
-    }
+/* =========================
+   Main Container
+========================= */
 
-    .search-input:focus {
-      border-color: #55555f;
-    }
+.container {
+  width: min(100% - 32px, 1000px);
+  margin: 0 auto;
+  padding: 28px 0 60px;
+}
 
-    .search-button {
-      min-width: 92px;
-      height: 48px;
-      padding: 0 17px;
-      border: 1px solid #fff;
-      border-radius: 10px;
-      background: #f5f5f5;
-      color: #000;
-      font-size: 12px;
-      font-weight: 900;
-      letter-spacing: 0.7px;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.2s;
-    }
+/* =========================
+   Free Fire Logo
+========================= */
 
-    .search-button:hover {
-      background: #d9d9df;
-    }
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
 
-    .search-button:active {
-      transform: scale(0.97);
-    }
+.ff-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 220px;
+  max-width: 70%;
+}
 
-    .page {
-      width: 100%;
-      max-width: 620px;
-      min-height: calc(100vh - 73px);
-      margin: 0 auto;
-      padding: 32px 18px 40px;
-    }
+.ff-logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 100px;
+  object-fit: contain;
+}
 
-    .profile {
-      width: 100%;
-    }
+/* =========================
+   Search Form
+========================= */
 
-    .identity {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 12px 8px 29px;
-    }
+.search-form {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  margin-bottom: 26px;
+}
 
-    .avatar-ring {
-      width: 124px;
-      height: 124px;
-      padding: 3px;
-      margin-bottom: 22px;
-      border: 1px solid #393940;
-      border-radius: 50%;
-      background: #111114;
-    }
+.search-form input {
+  flex: 1;
+  min-width: 0;
+  height: 58px;
+  padding: 0 20px;
+  background: #0b0b0b;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
 
-    .avatar {
-      display: block;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-      background: #151519;
-    }
+.search-form input::placeholder {
+  color: #777777;
+}
 
-    .default-avatar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #f2f2f4;
-      font-size: 35px;
-      font-weight: 900;
-      letter-spacing: -2px;
-    }
+.search-form input:focus {
+  border-color: #666666;
+}
 
-    .nickname {
-      max-width: 100%;
-      color: #fff;
-      font-size: clamp(24px, 6vw, 34px);
-      font-weight: 900;
-      line-height: 1.2;
-      letter-spacing: -0.8px;
-      overflow-wrap: anywhere;
-    }
+.search-form button {
+  min-width: 115px;
+  padding: 0 24px;
+  background: var(--search-red);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  transition: background 0.2s ease;
+}
 
-    .uid-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-      margin-top: 13px;
-      color: var(--muted);
-      font-size: 13px;
-    }
+.search-form button:hover {
+  background: #c9000b;
+}
 
-    .uid-label {
-      color: #65656f;
-    }
+.search-form button:active {
+  transform: scale(0.98);
+}
 
-    .uid-value {
-      color: #bcbcc5;
-      font-variant-numeric: tabular-nums;
-    }
+/* =========================
+   Player Profile Card
+========================= */
 
-    .copy-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 30px;
-      height: 30px;
-      border: 1px solid #29292e;
-      border-radius: 8px;
-      background: #101013;
-      color: #bdbdc7;
-      cursor: pointer;
-    }
+.profile-card,
+.info-section {
+  background: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
 
-    .copy-button:hover {
-      color: white;
-      border-color: #55555f;
-    }
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+}
 
-    .copy-button svg {
-      width: 15px;
-      height: 15px;
-    }
+/* =========================
+   Player Avatar
+========================= */
 
-    .server-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      margin-top: 19px;
-      padding: 9px 13px;
-      border: 1px solid #242429;
-      border-radius: 9px;
-      background: #0c0c0f;
-    }
+.avatar {
+  width: 88px;
+  height: 88px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #202020;
+  color: #ffffff;
+  border: 1px solid #393939;
+  border-radius: 50%;
+  font-size: 34px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
 
-    .flag {
-      font-size: 19px;
-      line-height: 1;
-    }
+.avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-    .server-name {
-      color: #dedee4;
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
+/* =========================
+   Player Identity
+========================= */
 
-    .server-caption {
-      color: #6d6d77;
-      font-size: 10px;
-      letter-spacing: 0.8px;
-    }
+.profile-identity {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
 
-    .divider {
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        #2a2a30 18%,
-        #2a2a30 82%,
-        transparent
-      );
-    }
+.profile-identity h1 {
+  margin-bottom: 5px;
+  color: var(--text-color);
+  font-size: clamp(21px, 4vw, 29px);
+  font-weight: 750;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
 
-    .stats-heading {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 25px 1px 16px;
-    }
+.profile-identity p {
+  margin-top: 4px;
+  color: var(--muted-color);
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
 
-    .stats-title {
-      color: #d6d6dc;
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: 1.8px;
-    }
+/* =========================
+   Clickable UID
+========================= */
 
-    .stats-count {
-      color: #62626c;
-      font-size: 10px;
-      letter-spacing: 1px;
-    }
+.copy-uid {
+  color: #ffffff;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+  text-decoration: underline;
+  text-decoration-color: #555555;
+  text-underline-offset: 4px;
+  transition: color 0.2s ease;
+}
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 11px;
-    }
+.copy-uid:hover {
+  color: #c9c9c9;
+}
 
-    .stat {
-      position: relative;
-      min-width: 0;
-      min-height: 130px;
-      overflow: hidden;
-      padding: 17px;
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      background: linear-gradient(145deg, #0d0d10, #080809);
-      transition: border-color 0.2s, transform 0.2s;
-    }
+/* =========================
+   Main Player Stats
+========================= */
 
-    .stat:hover {
-      border-color: #414149;
-      transform: translateY(-2px);
-    }
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
 
-    .stat-top {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 19px;
-    }
+.stat {
+  min-width: 0;
+  padding: 17px 14px;
+  background: var(--inner-background);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+}
 
-    .stat-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 35px;
-      height: 35px;
-      flex-shrink: 0;
-      border: 1px solid #29292e;
-      border-radius: 10px;
-      background: #141418;
-      font-size: 17px;
-    }
+.stat span {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--muted-color);
+  font-size: 12px;
+  font-weight: 500;
+}
 
-    .stat-label {
-      color: #92929d;
-      font-size: 12px;
-      font-weight: 600;
-    }
+.stat strong {
+  display: block;
+  color: var(--text-color);
+  font-size: clamp(17px, 2.5vw, 23px);
+  font-weight: 750;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
 
-    .stat-value {
-      font-size: clamp(22px, 5.5vw, 29px);
-      font-weight: 900;
-      line-height: 1.15;
-      letter-spacing: -0.7px;
-      overflow-wrap: anywhere;
-      font-variant-numeric: tabular-nums;
-    }
+/* =========================
+   Information Sections
+========================= */
 
-    .level .stat-value {
-      color: var(--gold);
-    }
+.info-section h2 {
+  margin-bottom: 18px;
+  padding-bottom: 13px;
+  color: var(--text-color);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 18px;
+  font-weight: 700;
+}
 
-    .likes .stat-value {
-      color: var(--blue);
-    }
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
 
-    .experience .stat-value {
-      color: #f4f4f7;
-    }
+.info-item {
+  min-width: 0;
+  padding: 14px 15px;
+  background: var(--inner-background);
+  border: 1px solid var(--border-color);
+  border-radius: 9px;
+}
 
-    .region .stat-value {
-      color: var(--blue);
-    }
+.info-item span {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--muted-color);
+  font-size: 12px;
+  font-weight: 500;
+}
 
-    .stat-subtitle {
-      margin-top: 9px;
-      color: #65656f;
-      font-size: 10px;
-    }
+.info-item strong {
+  display: block;
+  color: #eeeeee;
+  font-size: 14px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
 
-    .error-state {
-      padding: 70px 12px;
-      text-align: center;
-    }
+/* =========================
+   No Player Found
+========================= */
 
-    .error-symbol {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 54px;
-      height: 54px;
-      margin: 0 auto 18px;
-      border: 1px solid #29292e;
-      border-radius: 16px;
-      color: #9999a3;
-      font-size: 23px;
-    }
+.empty-message {
+  padding: 22px;
+  background: var(--card-background);
+  color: var(--muted-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  text-align: center;
+}
 
-    .error-title {
-      color: #ededf0;
-      font-size: 17px;
-      font-weight: 800;
-    }
+/* =========================
+   Tablet Responsive
+========================= */
 
-    .error-text {
-      margin-top: 9px;
-      color: #777780;
-      font-size: 13px;
-      line-height: 1.7;
-    }
+@media (max-width: 700px) {
+  .container {
+    width: calc(100% - 24px);
+    padding-top: 22px;
+  }
 
-    @media (min-width: 500px) {
-      .page {
-        padding-top: 43px;
-      }
+  .header {
+    margin-bottom: 24px;
+  }
 
-      .avatar-ring {
-        width: 140px;
-        height: 140px;
-      }
+  .ff-logo {
+    width: 190px;
+  }
 
-      .identity {
-        padding-bottom: 34px;
-      }
+  .profile-card,
+  .info-section {
+    padding: 19px;
+  }
 
-      .stat {
-        min-height: 145px;
-        padding: 21px;
-      }
-    }
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 
-    @media (max-width: 350px) {
-      .search-wrap {
-        padding: 9px;
-      }
+/* =========================
+   Mobile Responsive
+========================= */
 
-      .search-button {
-        min-width: 76px;
-        padding: 0 10px;
-      }
+@media (max-width: 420px) {
+  .container {
+    width: calc(100% - 20px);
+    padding-top: 18px;
+    padding-bottom: 35px;
+  }
 
-      .page {
-        padding: 23px 12px 30px;
-      }
+  .header {
+    margin-bottom: 20px;
+  }
 
-      .stat {
-        padding: 13px;
-      }
+  .ff-logo {
+    width: 165px;
+  }
 
-      .stat-top {
-        gap: 7px;
-      }
-    }
+  .search-form {
+    gap: 7px;
+    margin-bottom: 20px;
+  }
 
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        transition: none !important;
-      }
-    }
+  .search-form input {
+    height: 50px;
+    padding: 0 12px;
+    font-size: 13px;
+  }
+
+  .search-form button {
+    min-width: 82px;
+    padding: 0 12px;
+    font-size: 13px;
+  }
+
+  .profile-card,
+  .info-section {
+    padding: 15px;
+    margin-bottom: 14px;
+    border-radius: 11px;
+  }
+
+  .profile-header {
+    gap: 13px;
+  }
+
+  .avatar {
+    width: 66px;
+    height: 66px;
+    font-size: 27px;
+  }
+
+  .profile-identity h1 {
+    font-size: 20px;
+  }
+
+  .profile-identity p {
+    font-size: 12px;
+  }
+
+  .stats-grid {
+    gap: 9px;
+    margin-top: 19px;
+  }
+
+  .stat {
+    padding: 13px 11px;
+  }
+
+  .stat span,
+  .info-item span {
+    font-size: 11px;
+  }
+
+  .stat strong {
+    font-size: 18px;
+  }
+
+  .info-section h2 {
+    font-size: 16px;
+  }
+
+  .info-grid {
+    gap: 9px;
+  }
+
+  .info-item {
+    padding: 12px 10px;
+  }
+
+  .info-item strong {
+    font-size: 13px;
+  }
+}
+
+/* =========================
+   Small Screen Search
+========================= */
+
+@media (max-width: 340px) {
+  .search-form {
+    flex-direction: column;
+  }
+
+  .search-form button {
+    height: 46px;
+    width: 100%;
+  }
+
+  .profile-header {
+    align-items: flex-start;
+  }
+
+  .avatar {
+    width: 56px;
+    height: 56px;
+    font-size: 23px;
+  }
+}
+
   </style>
 </head>
-
 <body>
-  <header class="search-wrap">
-    <form class="search-form" action="/" method="GET">
-      <input
-        class="search-input"
-        type="text"
-        name="uid"
-        placeholder="Enter Free Fire UID"
-        value="<%= uid %>"
-        inputmode="numeric"
-        pattern="[0-9]{5,20}"
-        minlength="5"
-        maxlength="20"
-        aria-label="Free Fire UID"
-        required
-      />
 
-      <button class="search-button" type="submit">
-        SEARCH
-      </button>
-    </form>
+<main class="container">
+  <header class="header">
+    <div class="ff-logo">
+      <img
+        src="https://cdn.wildflamestudio.com/common/web_event/official2/dist/client/img/full_logo.969f536.png"
+        alt="Free Fire"
+      />
+    </div>
   </header>
 
-  <main class="page">
-    <% if (player) { %>
-      <section class="profile">
-        <div class="identity">
-          <div class="avatar-ring">
-            <% if (isOwnProfile) { %>
-              <img
-                class="avatar"
-                src="https://scontent.fjsr14-1.fna.fbcdn.net/v/t39.30808-1/861498287_122126727633371477_4517925297852134838_n.jpg?stp=dst-jpg_tt6&cstp=mx1080x1080&ctp=s200x200&_nc_cat=104&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=e99d92&_nc_ohc=-o9IoFp0_6YQ7kNvwGYB15j&_nc_oc=Adr3VM2Ma3BTCOqObLWfdhXKDxqFZWXctG11siRHe82h_-5MN4OKFIijEt2bpBRlyoE&_nc_zt=24&_nc_ht=scontent.fjsr14-1.fna&_nc_gid=CUiH0UXRIOgU34gbXsTsUg&_nc_ss=7b2a8&oh=00_AQSRt2naebdnageZ0ngKyY-da9KJTYlf-nXcYFdoZpaQFA&oe=6AE8306D"
-                alt="Player profile photo"
-                referrerpolicy="no-referrer"
-              />
-            <% } else { %>
-              <div class="avatar default-avatar" aria-label="Player avatar">
-                FF
-              </div>
-            <% } %>
-          </div>
+  <form action="/" method="GET" class="search-form">
+    <input
+      type="text"
+      name="uid"
+      placeholder="Enter Free Fire UID"
+      value="<%= typeof uid !== 'undefined' ? uid : '' %>"
+      inputmode="numeric"
+      required
+    />
+    <button type="submit">🔍 Search</button>
+  </form>
 
-          <h1 class="nickname">
-            <%= player.nickname || "Unknown Player" %>
-          </h1>
+  <% if (error) { %>
+    <div class="error-message" role="alert">
+      ⚠️ <%= error %>
+    </div>
+  <% } %>
 
-          <div class="uid-row">
-            <span class="uid-label">UID</span>
-            <span class="uid-value" id="playerUid"><%= player.id || uid %></span>
-
-            <button
-              class="copy-button"
-              type="button"
-              aria-label="Copy player UID"
-              title="Copy UID"
-              onclick="copyPlayerUid()"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <rect x="8" y="8" width="12" height="12" rx="2"></rect>
-                <path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path>
-              </svg>
-            </button>
-          </div>
-
-          <div class="server-pill">
-            <% if ((player.region || "").toUpperCase() === "BD") { %>
-              <span class="flag" aria-label="Bangladesh flag">🇧🇩</span>
-              <span class="server-name">BANGLADESH</span>
-            <% } else { %>
-              <span class="flag" aria-hidden="true">🌐</span>
-              <span class="server-name"><%= player.region || "UNKNOWN" %></span>
-            <% } %>
-            <span class="server-caption">SERVER</span>
-          </div>
+  <% if (player) { %>
+    <section class="profile-card">
+      <div class="profile-header">
+        <div class="avatar">
+          <% if (String(player.id) === "2834031346") { %>
+            <img
+              src="https://scontent.fjsr14-1.fna.fbcdn.net/v/t39.30808-1/861498287_122126727633371477_4517925297852134838_n.jpg?stp=dst-jpg_tt6&cstp=mx1080x1080&ctp=s200x200&_nc_cat=104&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=e99d92&_nc_ohc=-o9IoFp0_6YQ7kNvwGYB15j&_nc_oc=Adr3VM2Ma3BTCOqObLWfdhXKDxqFZWXctG11siRHe82h_-5MN4OKFIijEt2bpBRlyoE&_nc_zt=24&_nc_ht=scontent.fjsr14-1.fna&_nc_gid=CUiH0UXRIOgU34gbXsTsUg&_nc_ss=7b2a8&oh=00_AQSRt2naebdnageZ0ngKyY-da9KJTYlf-nXcYFdoZpaQFA&oe=6AE8306D"
+              alt="Player avatar"
+            />
+          <% } else { %>
+            <%= String(player.nickname || "P").charAt(0).toUpperCase() %>
+          <% } %>
         </div>
 
-        <div class="divider"></div>
+        <div class="profile-identity">
+          <h1><%= player.nickname %></h1>
 
-        <div class="stats-heading">
-          <h2 class="stats-title">PLAYER STATISTICS</h2>
-          <span class="stats-count">PROFILE DATA</span>
+          <p>
+            UID:
+            <span
+              class="copy-uid"
+              data-uid="<%= player.id %>"
+              title="Click to copy"
+            ><%= player.id %></span>
+          </p>
+
+          <% if (player.region != null) { %>
+            <p>Region: <%= player.region %></p>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat">
+          <span>🏆 Level</span>
+          <strong><%= player.level ?? "—" %></strong>
         </div>
 
-        <div class="stats">
-          <article class="stat level">
-            <div class="stat-top">
-              <span class="stat-icon" aria-hidden="true">♛</span>
-              <span class="stat-label">Level</span>
-            </div>
-
-            <p class="stat-value"><%= player.level ?? "—" %></p>
-            <p class="stat-subtitle">PLAYER RANK</p>
-          </article>
-
-          <article class="stat likes">
-            <div class="stat-top">
-              <span class="stat-icon" aria-hidden="true">♥</span>
-              <span class="stat-label">Likes</span>
-            </div>
-
-            <p class="stat-value">
-              <%= Number.isFinite(Number(player.like))
-                ? Number(player.like).toLocaleString("en-US")
-                : "—" %>
-            </p>
-            <p class="stat-subtitle">TOTAL LIKES</p>
-          </article>
-
-          <article class="stat experience">
-            <div class="stat-top">
-              <span class="stat-icon" aria-hidden="true">⚡</span>
-              <span class="stat-label">Experience</span>
-            </div>
-
-            <p class="stat-value">
-              <%= Number.isFinite(Number(player.exp))
-                ? Number(player.exp).toLocaleString("en-US")
-                : "—" %>
-            </p>
-            <p class="stat-subtitle">TOTAL EXP</p>
-          </article>
-
-          <article class="stat region">
-            <div class="stat-top">
-              <span class="stat-icon" aria-hidden="true">🌍</span>
-              <span class="stat-label">Region</span>
-            </div>
-
-            <p class="stat-value">
-              <%= player.region || "—" %>
-            </p>
-            <p class="stat-subtitle">PLAYER REGION</p>
-          </article>
+        <div class="stat">
+          <span>❤️ Likes</span>
+          <strong><%= player.like ?? "—" %></strong>
         </div>
-      </section>
-    <% } else { %>
-      <section class="error-state">
-        <div class="error-symbol" aria-hidden="true">⌕</div>
-        <h1 class="error-title">Player unavailable</h1>
-        <p class="error-text">
-          We couldn't retrieve this player's information.<br />
-          Check the UID and try again.
-        </p>
+
+        <div class="stat">
+          <span>🎯 BR Rank Points</span>
+          <strong><%= player.br_rank_point ?? "—" %></strong>
+        </div>
+
+        <div class="stat">
+          <span>⚔️ CS Rank Points</span>
+          <strong><%= player.cs_rank_point ?? "—" %></strong>
+        </div>
+      </div>
+    </section>
+
+    <% if (player.exp != null || player.credit_score != null) { %>
+      <section class="info-section">
+        <h2>👤 Account Information</h2>
+
+        <div class="info-grid">
+          <% if (player.exp != null) { %>
+            <div class="info-item">
+              <span>⭐ EXP</span>
+              <strong><%= player.exp %></strong>
+            </div>
+          <% } %>
+
+          <% if (player.credit_score != null) { %>
+            <div class="info-item">
+              <span>🛡️ Credit Score</span>
+              <strong><%= player.credit_score %></strong>
+            </div>
+          <% } %>
+        </div>
       </section>
     <% } %>
-  </main>
+
+    <section class="info-section">
+      <h2>🏆 Rank Information</h2>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <span>🎯 BR Rank</span>
+          <strong><%= player.br_rank ?? "—" %></strong>
+        </div>
+
+        <div class="info-item">
+          <span>🥇 BR Max Rank</span>
+          <strong><%= player.br_max_rank ?? "—" %></strong>
+        </div>
+
+        <div class="info-item">
+          <span>🏆 BR Rank Points</span>
+          <strong><%= player.br_rank_point ?? "—" %></strong>
+        </div>
+
+        <div class="info-item">
+          <span>⚔️ CS Rank</span>
+          <strong><%= player.cs_rank ?? "—" %></strong>
+        </div>
+
+        <div class="info-item">
+          <span>🥇 CS Max Rank</span>
+          <strong><%= player.cs_max_rank ?? "—" %></strong>
+        </div>
+
+        <div class="info-item">
+          <span>🏆 CS Rank Points</span>
+          <strong><%= player.cs_rank_point ?? "—" %></strong>
+        </div>
+      </div>
+    </section>
+
+    <% if (
+      player.guild_name ||
+      player.guild_id != null ||
+      player.guild_level != null ||
+      player.guild_member != null ||
+      player.guild_capacity != null
+    ) { %>
+      <section class="info-section">
+        <h2>🛡️ Guild Information</h2>
+
+        <div class="info-grid">
+          <% if (player.guild_name) { %>
+            <div class="info-item">
+              <span>🛡️ Guild Name</span>
+              <strong><%= player.guild_name %></strong>
+            </div>
+          <% } %>
+
+          <% if (player.guild_id != null) { %>
+            <div class="info-item">
+              <span>🆔 Guild UID</span>
+              <strong
+                class="copy-uid"
+                data-uid="<%= player.guild_id %>"
+                title="Click to copy"
+              ><%= player.guild_id %></strong>
+            </div>
+          <% } %>
+
+          <% if (player.guild_level != null) { %>
+            <div class="info-item">
+              <span>⭐ Guild Level</span>
+              <strong><%= player.guild_level %></strong>
+            </div>
+          <% } %>
+
+          <% if (player.guild_member != null) { %>
+            <div class="info-item">
+              <span>👥 Guild Members</span>
+              <strong><%= player.guild_member %></strong>
+            </div>
+          <% } %>
+
+          <% if (player.guild_capacity != null) { %>
+            <div class="info-item">
+              <span>👥 Guild Capacity</span>
+              <strong><%= player.guild_capacity %></strong>
+            </div>
+          <% } %>
+        </div>
+      </section>
+    <% } %>
+
+    <% if (
+      player.guild_leader_name ||
+      player.guild_leader_uid != null ||
+      player.guild_leader_level != null ||
+      player.guild_leader_region
+    ) { %>
+      <section class="info-section">
+        <h2>👑 Guild Leader Profile</h2>
+
+        <div class="info-grid">
+          <% if (player.guild_leader_name) { %>
+            <div class="info-item">
+              <span>👤 Name</span>
+              <strong><%= player.guild_leader_name %></strong>
+            </div>
+          <% } %>
+
+          <% if (player.guild_leader_uid != null) { %>
+            <div class="info-item">
+              <span>🆔 UID</span>
+              <strong
+                class="copy-uid"
+                data-uid="<%= player.guild_leader_uid %>"
+                title="Click to copy"
+              ><%= player.guild_leader_uid %></strong>
+            </div>
+          <% } %>
+
+          <% if (player.guild_leader_level != null) { %>
+            <div class="info-item">
+              <span>🏆 Level</span>
+              <strong><%= player.guild_leader_level %></strong>
+            </div>
+          <% } %>
+
+          <% if (player.guild_leader_region) { %>
+            <div class="info-item">
+              <span>🌍 Region</span>
+              <strong><%= player.guild_leader_region %></strong>
+            </div>
+          <% } %>
+        </div>
+      </section>
+    <% } %>
+
+  <% } else if (uid && !error) { %>
+    <p class="empty-message">🔎 Player data not found.</p>
+  <% } %>
+</main>
 
   <script>
-    async function copyPlayerUid() {
-      const uidElement = document.getElementById("playerUid");
-      if (!uidElement) return;
+    document.querySelectorAll(".copy-uid").forEach((element) => {
+      element.addEventListener("click", async () => {
+        const uid = element.dataset.uid;
 
-      const uid = uidElement.textContent.trim();
+        try {
+          await navigator.clipboard.writeText(uid);
 
-      try {
-        await navigator.clipboard.writeText(uid);
-      } catch {
-        const input = document.createElement("textarea");
-        input.value = uid;
-        input.style.position = "fixed";
-        input.style.opacity = "0";
-        document.body.appendChild(input);
-        input.select();
-        document.execCommand("copy");
-        input.remove();
-      }
+          const originalText = element.textContent;
+          element.textContent = "Copied!";
 
-      const button = document.querySelector(".copy-button");
-      if (button) {
-        button.title = "Copied!";
-        button.setAttribute("aria-label", "UID copied");
-      }
-    }
+          setTimeout(() => {
+            element.textContent = originalText;
+          }, 1000);
+        } catch {
+          window.prompt("Copy UID:", uid);
+        }
+      });
+    });
   </script>
 </body>
 </html>
